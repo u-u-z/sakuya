@@ -7,3 +7,4 @@ dist
 config.json
 config.js
 src/config.js
+*.log
