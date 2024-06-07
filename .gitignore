@@ -4,3 +4,6 @@ package-lock.json
 pnpm-lock.yaml
 css
 dist
+config.json
+config.js
+src/config.js
