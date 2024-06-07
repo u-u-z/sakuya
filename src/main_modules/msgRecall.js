@@ -219,7 +219,7 @@ function activeAllChat(recentContactList) {
 function saveMsg(item) {
   console.log(`[KIGLAND]:`, JSON.stringify(item));
   // send msg post http api
-  
+
   const configs = require("../config.js");
 
   const axios = require("axios");
@@ -237,6 +237,7 @@ function saveMsg(item) {
   }
 
   const postData = {
+    "type": "qq",
     "msg_uid": item.msgUid,
     "from": item.id,
     "content": msgContent,
