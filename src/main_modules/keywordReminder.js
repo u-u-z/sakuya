@@ -2,6 +2,8 @@ import { findEventIndex } from "./findEventIndex.js";
 import { checkChatType } from "./checkChatType.js";
 import { mainMessage } from "./captureWindow.js";
 import { config } from "./config.js";
+import { Logs } from "./logs.js";
+const log = new Logs("消息内容");
 
 /**
  * 关键字提醒功能模块

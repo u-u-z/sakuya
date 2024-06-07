@@ -1,0 +1,6 @@
+export const config = {
+  "target": "http://127.0.0.1:9992",
+  "Authorization": "Bearer 132344-59e2-40cf-997d-c2b20635574a"
+}
+
+// JUST EXAMPLE

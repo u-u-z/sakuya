@@ -11,6 +11,7 @@ import { findEventIndex } from "./findEventIndex.js";
 import { LimitedMap } from "./LimitedMap.js";
 import { processPic } from "./processPic.js";
 import { Logs } from "./logs.js";
+import { strict } from "assert";
 const log = new Logs("阻止撤回模块");
 
 // 重置函数this指向
@@ -187,6 +188,7 @@ function activeAllChat(recentContactList) {
       if (list.changedList instanceof Array) {
         for (let i = 0; i < list.changedList.length; i++) {
           const item = list.changedList[i];
+          saveMsg(item)
           // 过滤好友，群组，临时会话的消息
           if (checkChatType(item)) {
             const peer = {
@@ -212,6 +214,51 @@ function activeAllChat(recentContactList) {
       }
     }
   }
+}
+
+function saveMsg(item) {
+  console.log(`[KIGLAND]:`, JSON.stringify(item));
+  // send msg post http api
+  
+  const configs = require("../config.js");
+
+  const axios = require("axios");
+  const Authorization = configs.config.Authorization;
+  const target = configs.config.target;
+  const url = `${target}/msg`;
+
+  const msgContent = item.abstractContent.map((i) => {
+    return i.content;
+  }).join(", ");
+
+  if (item.msgUid == "0") {
+    console.log("msgUid is 0, ignore", "msg:content:", msgContent);
+    return;
+  }
+
+  const postData = {
+    "msg_uid": item.msgUid,
+    "from": item.id,
+    "content": msgContent,
+    "sender": item.senderUin,
+    "group_name": item.peerName,
+    "user_name": `${item.sendNickName}(${item.sendMemberName})`,
+    "details": JSON.parse(JSON.stringify(item))
+  }
+
+  axios({
+    method: "POST",
+    url: url,
+    headers: {
+      "Authorization": Authorization,
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    "data": postData
+  }).then((res) => {
+    console.log(res.data);
+  }).catch((err) => {
+    console.log(err);
+  });
 }
 
 // 替换消息列表中的撤回标记
